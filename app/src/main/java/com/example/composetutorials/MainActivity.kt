@@ -3,54 +3,36 @@ package com.example.composetutorials
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val scaffoldState = rememberScaffoldState()
-            var textFieldState by remember{
-                mutableStateOf("")
+            LazyColumn{
+                itemsIndexed(
+                    listOf("This", "is", "Jetpack", "Compose")
+                ){ index, string ->
+                    Text(
+                        text = string,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 24.dp)
+                    )
+                }
             }
-             val scope = rememberCoroutineScope()
-          Scaffold(
-              modifier = Modifier.fillMaxSize()
-          ) {
-              Column(
-                  horizontalAlignment = Alignment.CenterHorizontally,
-                  verticalArrangement = Arrangement.Center,
-                  modifier = Modifier
-                      .fillMaxSize()
-                      .padding(horizontal = 30.dp)
-              ) {
-                  TextField(
-                      value = textFieldState,
-                      label = {
-                          Text("Enter your name")
-                      },
-                      onValueChange = {
-                          textFieldState = it
-                      },
-                      singleLine = true,
-                      modifier = Modifier.fillMaxWidth()
-                  )
-                  Spacer(modifier = Modifier.height(16.dp))
-                  Button(onClick = {
-                      scope.launch{
-                          scaffoldState.snackbarHostState.showSnackbar("Hello $textFieldState")
-                      }
-                  }) {
-                      Text("Pls greet me")
-                  }
-              }
-          }
         }
     }
 }
